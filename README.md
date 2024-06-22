@@ -26,6 +26,8 @@ Under Windows:
 reader COM1
 ```
 
+where */dev/ttyUSB0* (on Linux) or *COM1* (on Windows) should be actual serial port name of connected ROM reader.
+
 # Basic instructions
 
 1. Connect the reader to the PC. Running the program on a PC without a module connected is signaled with an error.
