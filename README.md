@@ -2,7 +2,8 @@
 
 Dedicated module reader for FLT\ART\CU1 ROMs archiving.
 
-![Preview](PCB/PREVIEW.png)
+![Top](PCB/TOP.jpg)
+![Bottom](PCB/BOTTOM.jpg)
 
 # Directories organization
 
