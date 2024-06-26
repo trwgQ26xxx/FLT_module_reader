@@ -1,3 +1,10 @@
+/* 
+Project name:	FLT/ART/CU1 ROM Reader
+Author: 		trwgQ26xxx
+Date:			26.06.2024
+Target MCUs:	ATmega64/ATmega64L/ATmega64A/ATmega128/ATmega128L/ATmega128A
+Compiler:		AVR-GCC version 5.4.0 (32-bit)
+*/
 
 #include <stdint.h>
 #include <string.h>
@@ -33,8 +40,6 @@ inline uint8_t Check_32K_ROM(void);
 inline uint8_t Check_64K_ROMs(void);
 void RomDetection(void);
 void RomRead(void);
-
-//avrdude -c usbasp -p m64 -U hfuse:w:0xC9:m
 
 int main(void)
 {
