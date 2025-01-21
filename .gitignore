@@ -1,0 +1,6 @@
+/.metadata/
+/firmware/.project
+/firmware/out/*.o
+/firmware/out/*.elf
+/PCB/GERBERS/
+/PCB/*backups/
