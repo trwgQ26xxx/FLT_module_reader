@@ -1,5 +1,9 @@
 from serial.tools import list_ports
 
+print("------------------------------------------")
+print("FLT/ART/CU-1 ROM reader by trwgQ26xxx v1.0")
+print("------------------------------------------")
+
 print("Looking for serial ports...")
 
 found_ports = list(list_ports.comports())

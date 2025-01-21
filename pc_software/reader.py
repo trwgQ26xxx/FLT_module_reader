@@ -188,6 +188,10 @@ def write_file(file_name_preffix, rom_name,	rom_content):
 
 #MAIN PROGRAM
 try:
+	print("------------------------------------------")
+	print("FLT/ART/CU-1 ROM reader by trwgQ26xxx v1.0")
+	print("------------------------------------------")
+
 	if len(sys.argv) == 2:
 
 		serial_port = sys.argv[1]

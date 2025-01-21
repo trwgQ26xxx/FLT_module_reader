@@ -127,6 +127,10 @@ def print_test_result(cmd):
 
 #MAIN PROGRAM
 try:
+	print("------------------------------------------")
+	print("FLT/ART/CU-1 ROM reader by trwgQ26xxx v1.0")
+	print("------------------------------------------")
+
 	if len(sys.argv) == 3:
 
 		ram_type = sys.argv[1]
