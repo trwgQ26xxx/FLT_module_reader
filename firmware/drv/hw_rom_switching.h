@@ -38,7 +38,6 @@ PF7 -> A15
 #define IS_ROM_MODULE_PRESENT	(!(PINF & (1 << 5)))
 
 /* A15 pin switching */
-#define CONFIGURE_A15_AS_IN		do{ DDRF &= ~(1 << 7); PORTF &= ~(1 << 7);				}while(0)	/* In without pull-up */
 #define CONFIGURE_A15_AS_OUT	do{ DDRF |= (1 << 7);									}while(0)
 #define SET_A15_TO_HIGH			do{ PORTF |= (1 << 7);									}while(0)
 #define SET_A15_TO_LOW			do{ PORTF &= ~(1 << 7);									}while(0)
@@ -46,6 +45,6 @@ PF7 -> A15
 /* Initialize function */
 void Init_ROMs(void);
 
-uint8_t Check_B_and_C_ROMs_size(void);
+void Init_unused_pins(void);
 
 #endif

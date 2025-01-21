@@ -16,59 +16,45 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #define INIT_ROM_SEL_PORTS		do{ DDRD |= (1 << 7) | (1 << 6) | (1 << 5);				}while(0)
 #define INIT_ROM_MODULE_DET		do{ DDRF &= ~(1 << 5); PORTF |= (1 << 5); 				}while(0)	/* In with pull-up */
 
-#define A15_LINE_ADC_CHANNEL	7
-
 /* Init procedure */
 void Init_ROMs(void)
 {
 	INIT_ROM_MODULE_DET;
+
 	SET_A15_TO_HIGH;
 	CONFIGURE_A15_AS_OUT;
+
 	DISABLE_ALL_ROMS;
 	INIT_ROM_SEL_PORTS;
 
 	/* Configure ADC */
-	ADCSRA = (1 << ADEN) | (0x6 << ADPS0);	//ADC Enable, 144kHz clock
-	ADCSRB = (0 << ADTS0);					//Free running mode
+	ADCSRA = 0x00;	//ADC Disabled
+	ADCSRB = 0x00;	//Free running mode
 
-	ADMUX = (0x1 << REFS0) | (1 << ADLAR) | (A15_LINE_ADC_CHANNEL << MUX0);	//AVcc as reference, left adjust result
+	ADMUX = (0x1 << REFS0);	//AVcc as reference with external capacitor at AREF pin
 }
 
-unsigned char Get_ADC_conversion(void)
+void Init_unused_pins(void)
 {
-	ADCSRA |= (1 << ADSC);	//Start conversion
+	SFIOR = (0 << PUD);	//Pull-ups enabled
 
-	while(ADCSRA & (1 << ADSC));	//Wait for conversion to finish
+	/* Port B is unused */
+	DDRB = 0x00;
+	PORTB = 0xFF;
 
-	return ADCH;
-}
+	/* PD0, PD1 and PD4 are unused */
+	DDRD &= ~((1 << 4) | (1 << 1) | (1 << 0));
+	PORTD |= ((1 << 4) | (1 << 1) | (1 << 0));
 
-uint8_t Check_B_and_C_ROMs_size(void)
-{
-	uint8_t ROMs_B_and_C_are_64k = FALSE;
+	/* Port E is unused */
+	DDRE = 0x00;
+	PORTE = 0xFF;
 
-	uint8_t counter, i;
+	/* PF2, PF3, PF4 and PF6 are unused */
+	DDRF &= ~((1 << 6) | (1 << 4) | (1 << 3) | (1 << 2));
+	PORTF |= ((1 << 6) | (1 << 4) | (1 << 3) | (1 << 2));
 
-	/* Drive A15 as analog in */
-	CONFIGURE_A15_AS_IN;
-
-	/* Take 10 measurements with 8bit ADC, 10ms apart */
-	counter = 0;
-	for(i = 0; i < NUMBER_OF_ADC_MEASUREMENTS; i++)
-	{
-		_delay_ms(DELAY_BETWEEN_ADC_MEASUREMENTS);
-
-		if(Get_ADC_conversion() > 128)
-		{
-			counter++;
-		}
-	}
-
-	ROMs_B_and_C_are_64k = (counter < (NUMBER_OF_ADC_MEASUREMENTS / 2)) ? TRUE : FALSE;
-
-	/* Drive A15 high */
-	SET_A15_TO_HIGH;
-	CONFIGURE_A15_AS_OUT;
-
-	return ROMs_B_and_C_are_64k;
+	/* PG3 and PG4 are unused */
+	DDRG &= ~((1 << 4) | (1 << 3));
+	PORTG |= ((1 << 4) | (1 << 3));
 }

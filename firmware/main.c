@@ -59,6 +59,7 @@ int main(void)
     Init_ROMs();
     Init_UART(BAUDRATE);
     Init_TMR(TMR_PERIOD);
+    Init_unused_pins();
 
     /* Enable IRQs */
     sei();
