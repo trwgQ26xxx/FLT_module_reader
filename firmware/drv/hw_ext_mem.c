@@ -154,7 +154,7 @@ uint8_t Check_if_RAM_battery_is_OK(void)
 uint8_t Check_if_RAM_memory_is_OK(uint16_t ram_size)
 {
 	/* Pass 1 - static patterns test */
-	for(uint8_t i = 0; i <  RAM_TEST_PATTERNS_NUM; i++)
+	for(uint8_t i = 0; i < RAM_TEST_PATTERNS_NUM; i++)
 	{
 		Store_pattern(ram_test_patterns[i], ram_size);
 
@@ -174,49 +174,49 @@ uint8_t Check_if_RAM_memory_is_OK(uint16_t ram_size)
 void Start_RAM_clock_oscillator(uint16_t base_addr)
 {
 	/* Start oscillator */
-	Clr_bit_in_RAM_register(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET, M48T0x_STOP_BIT);
+	Clr_bit_in_RAM_register(base_addr+M48T0x_SECONDS_REG_OFFSET, M48T0x_STOP_BIT);
 }
 
 void Stop_RAM_clock_oscillator(uint16_t base_addr)
 {
 	/* Stop oscillator */
-	Set_bit_in_RAM_register(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET, M48T0x_STOP_BIT);
+	Set_bit_in_RAM_register(base_addr+M48T0x_SECONDS_REG_OFFSET, M48T0x_STOP_BIT);
 }
 
 void Reset_RAM_clock(uint16_t base_addr)
 {
 	/* Stop oscillator */
-	Set_bit_in_RAM_register(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET, M48T0x_STOP_BIT);
+	Set_bit_in_RAM_register(base_addr+M48T0x_SECONDS_REG_OFFSET, M48T0x_STOP_BIT);
 
 	/* Disable frequency test */
-	Clr_bit_in_RAM_register(base_addr+M48T0x_DAY_REG_ADDR_OFFSET, M48T0x_FREQ_TEST_BIT);
+	Clr_bit_in_RAM_register(base_addr+M48T0x_DAY_REG_OFFSET, M48T0x_FREQ_TEST_BIT);
 
 	/* Set WRITE bit, clear READ and SIGN bit, set calibration to 0 */
-	Write_RAM_byte(base_addr+M48T0x_CONTROL_REG_ADDR_OFFSET, M48T0x_WRITE_BIT);
+	Write_RAM_byte(base_addr+M48T0x_CONTROL_REG_OFFSET, M48T0x_WRITE_BIT);
 
 	/* Set year to 0 */
-	Write_RAM_byte(base_addr+M48T0x_YEAR_REG_ADDR_OFFSET, 0x00);
+	Write_RAM_byte(base_addr+M48T0x_YEAR_REG_OFFSET, 0x00);
 
 	/* Set month to 1 */
-	Write_RAM_byte(base_addr+M48T0x_MONTH_REG_ADDR_OFFSET, 0x01);
+	Write_RAM_byte(base_addr+M48T0x_MONTH_REG_OFFSET, 0x01);
 
 	/* Set date to 1 */
-	Write_RAM_byte(base_addr+M48T0x_DATE_REG_ADDR_OFFSET, 0x01);
+	Write_RAM_byte(base_addr+M48T0x_DATE_REG_OFFSET, 0x01);
 
 	/* Set day to 1, FT bit to 0 */
-	Write_RAM_byte(base_addr+M48T0x_DAY_REG_ADDR_OFFSET, 0x01);
+	Write_RAM_byte(base_addr+M48T0x_DAY_REG_OFFSET, 0x01);
 
 	/* Set hours to 0 */
-	Write_RAM_byte(base_addr+M48T0x_HOURS_REG_ADDR_OFFSET, 0x00);
+	Write_RAM_byte(base_addr+M48T0x_HOURS_REG_OFFSET, 0x00);
 
 	/* Set minutes to 0 */
-	Write_RAM_byte(base_addr+M48T0x_MINUTES_REG_ADDR_OFFSET, 0x00);
+	Write_RAM_byte(base_addr+M48T0x_MINUTES_REG_OFFSET, 0x00);
 
 	/* Set seconds to 0, stop oscillator */
-	Write_RAM_byte(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET, 0x00 | M48T0x_STOP_BIT);
+	Write_RAM_byte(base_addr+M48T0x_SECONDS_REG_OFFSET, 0x00 | M48T0x_STOP_BIT);
 
 	/* Clear WRITE, READ and SIGN bits, set calibration to 0 */
-	Write_RAM_byte(base_addr+M48T0x_CONTROL_REG_ADDR_OFFSET, 0x00);
+	Write_RAM_byte(base_addr+M48T0x_CONTROL_REG_OFFSET, 0x00);
 }
 
 void Set_time_in_RAM_clock(uint16_t base_addr, struct time_data *time)
@@ -231,72 +231,72 @@ void Set_time_in_RAM_clock(uint16_t base_addr, struct time_data *time)
 	Limit_val_to_min(0, 59,	&time->second);
 
 	/* Set WRITE bit */
-	Set_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_ADDR_OFFSET, M48T0x_WRITE_BIT);
+	Set_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_OFFSET, M48T0x_WRITE_BIT);
 
 	/* Set year */
-	Write_RAM_byte(base_addr+M48T0x_YEAR_REG_ADDR_OFFSET, DEC2BCD(time->year));
+	Write_RAM_byte(base_addr+M48T0x_YEAR_REG_OFFSET, DEC2BCD(time->year));
 
 	/* Set month */
-	Write_RAM_byte(base_addr+M48T0x_MONTH_REG_ADDR_OFFSET, DEC2BCD(time->month));
+	Write_RAM_byte(base_addr+M48T0x_MONTH_REG_OFFSET, DEC2BCD(time->month));
 
 	/* Set date */
-	Write_RAM_byte(base_addr+M48T0x_DATE_REG_ADDR_OFFSET, DEC2BCD(time->date));
+	Write_RAM_byte(base_addr+M48T0x_DATE_REG_OFFSET, DEC2BCD(time->date));
 
 	/* Set day */
-	Write_RAM_byte(base_addr+M48T0x_DAY_REG_ADDR_OFFSET, DEC2BCD(time->day));
+	Write_RAM_byte(base_addr+M48T0x_DAY_REG_OFFSET, DEC2BCD(time->day));
 
 	/* Set hours */
-	Write_RAM_byte(base_addr+M48T0x_HOURS_REG_ADDR_OFFSET, DEC2BCD(time->hour));
+	Write_RAM_byte(base_addr+M48T0x_HOURS_REG_OFFSET, DEC2BCD(time->hour));
 
 	/* Set minutes */
-	Write_RAM_byte(base_addr+M48T0x_MINUTES_REG_ADDR_OFFSET, DEC2BCD(time->minute));
+	Write_RAM_byte(base_addr+M48T0x_MINUTES_REG_OFFSET, DEC2BCD(time->minute));
 
 	/* Set seconds */
 
 	/* Check if oscillator is enabled */
-	if(Read_ROM_byte(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET) & M48T0x_STOP_BIT)
+	if(Read_ROM_byte(base_addr+M48T0x_SECONDS_REG_OFFSET) & M48T0x_STOP_BIT)
 	{
 		/* Not enabled, keep STOP bit set */
-		Write_RAM_byte(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET, DEC2BCD(time->second) | M48T0x_STOP_BIT);
+		Write_RAM_byte(base_addr+M48T0x_SECONDS_REG_OFFSET, DEC2BCD(time->second) | M48T0x_STOP_BIT);
 	}
 	else
 	{
 		/* Enabled */
-		Write_RAM_byte(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET, DEC2BCD(time->second));
+		Write_RAM_byte(base_addr+M48T0x_SECONDS_REG_OFFSET, DEC2BCD(time->second));
 	}
 
 	/* Clear WRITE bit, end cycle */
-	Clr_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_ADDR_OFFSET, M48T0x_WRITE_BIT);
+	Clr_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_OFFSET, M48T0x_WRITE_BIT);
 }
 
 void Get_time_from_RAM_clock(uint16_t base_addr, struct time_data *time)
 {
 	/* Set READ bit */
-	Set_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_ADDR_OFFSET, M48T0x_READ_BIT);
+	Set_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_OFFSET, M48T0x_READ_BIT);
 
 	/* Get year */
-	time->year = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_YEAR_REG_ADDR_OFFSET) & 0xFF);
+	time->year = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_YEAR_REG_OFFSET) & 0xFF);
 
 	/* Get month */
-	time->month = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_MONTH_REG_ADDR_OFFSET) & 0x1F);
+	time->month = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_MONTH_REG_OFFSET) & 0x1F);
 
 	/* Get date */
-	time->date = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_DATE_REG_ADDR_OFFSET) & 0x3F);
+	time->date = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_DATE_REG_OFFSET) & 0x3F);
 
 	/* Get day */
-	time->day = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_DAY_REG_ADDR_OFFSET) & 0x07);
+	time->day = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_DAY_REG_OFFSET) & 0x07);
 
 	/* Get hour */
-	time->hour = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_HOURS_REG_ADDR_OFFSET) & 0x3F);
+	time->hour = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_HOURS_REG_OFFSET) & 0x3F);
 
 	/* Get minute */
-	time->minute = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_MINUTES_REG_ADDR_OFFSET) & 0x7F);
+	time->minute = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_MINUTES_REG_OFFSET) & 0x7F);
 
 	/* Get second */
-	time->second = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_SECONDS_REG_ADDR_OFFSET) & 0x7F);
+	time->second = BCD2BIN(Read_ROM_byte(base_addr+M48T0x_SECONDS_REG_OFFSET) & 0x7F);
 
 	/* Clear READ bit */
-	Clr_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_ADDR_OFFSET, M48T0x_READ_BIT);
+	Clr_bit_in_RAM_register(base_addr+M48T0x_CONTROL_REG_OFFSET, M48T0x_READ_BIT);
 }
 
 inline uint8_t Read_ROM_byte(uint16_t address)
