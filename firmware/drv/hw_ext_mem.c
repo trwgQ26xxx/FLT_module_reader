@@ -15,6 +15,7 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #include "../common_definitions.h"
 
 #include "ram_test_definitions.h"
+#include "ram_test_data.h"
 
 #define EXT_MEM_BASE			0x8000
 
@@ -32,8 +33,8 @@ void Clr_bit_in_RAM_register(uint16_t address, uint8_t bit);
 
 inline void Store_pattern(const uint8_t pattern, uint16_t ram_size);
 inline uint8_t Verify_pattern(const uint8_t pattern, uint16_t ram_size);
-inline void Store_data(const uint8_t *data, uint16_t ram_size, uint16_t start_addr);
-inline uint8_t Verify_data(const uint8_t *data, uint16_t ram_size, uint16_t start_addr);
+inline void Store_test_data(uint16_t ram_size);
+inline uint8_t Verify_test_data(uint16_t ram_size);
 
 void Limit_val_to_min(uint8_t min, uint8_t max, uint8_t *val);
 
@@ -162,6 +163,14 @@ uint8_t Check_if_RAM_memory_is_OK(uint16_t ram_size)
 		{
 			return FALSE;
 		}
+	}
+
+	/* Pass 2 - random data test */
+	Store_test_data(ram_size);
+
+	if(Verify_test_data(ram_size) == FALSE)
+	{
+		return FALSE;
 	}
 
 	/* Final cleanup (0xFF fill) */
@@ -371,21 +380,37 @@ inline uint8_t Verify_pattern(const uint8_t pattern, uint16_t ram_size)
 	return TRUE;
 }
 
-inline void Store_data(const uint8_t *data, uint16_t ram_size, uint16_t start_addr)
+inline void Store_test_data(uint16_t ram_size)
 {
+	uint16_t test_data_index = 0;
+
 	for(uint16_t addr = 0; addr < ram_size; addr++)
 	{
-		Write_RAM_byte(start_addr+addr, data[addr]);
+		Write_RAM_byte(addr, pgm_read_byte(&ram_test_data[test_data_index++]));
+
+		/* Wrap around if memory size is greater than test data array length */
+		if(test_data_index >= RAM_TEST_DATA_LENGTH)
+		{
+			test_data_index = 0;
+		}
 	}
 }
 
-inline uint8_t Verify_data(const uint8_t *data, uint16_t ram_size, uint16_t start_addr)
+inline uint8_t Verify_test_data(uint16_t ram_size)
 {
+	uint16_t test_data_index = 0;
+
 	for(uint16_t addr = 0; addr < ram_size; addr++)
 	{
-		if(Read_ROM_byte(start_addr+addr) != data[addr])
+		if(Read_ROM_byte(addr) != pgm_read_byte(&ram_test_data[test_data_index++]))
 		{
 			return FALSE;
+		}
+
+		/* Wrap around if memory size is greater than test data array length */
+		if(test_data_index >= RAM_TEST_DATA_LENGTH)
+		{
+			test_data_index = 0;
 		}
 	}
 
