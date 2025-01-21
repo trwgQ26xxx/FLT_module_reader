@@ -29,6 +29,9 @@ volatile uint8_t ROM_A_is_present = ROM_NOT_PRESENT;
 volatile uint8_t ROM_B_is_present = ROM_NOT_PRESENT;
 volatile uint8_t ROM_C_is_present = ROM_NOT_PRESENT;
 
+volatile uint8_t RAM_battery_is_OK = FALSE;
+volatile uint8_t RAM_memory_is_OK = FALSE;
+
 static uint8_t rx_cmd_buffer[RX_CMD_BUFFER_MAX_LEN], rx_cmd_len = 0;
 static uint8_t tx_response_buffer[TX_BUFFER_MAX_LEN];
 
@@ -38,8 +41,15 @@ inline void Clear_ROM_info(void);
 inline uint8_t Check_8K_ROM(void);
 inline uint8_t Check_32K_ROM(void);
 inline uint8_t Check_64K_ROMs(void);
+
 void RomDetection(void);
 void RomRead(void);
+
+void RamTest(void);
+
+void ControlRamClock(void);
+void GetRamClock(void);
+void SetRamClock(void);
 
 int main(void)
 {
@@ -69,15 +79,27 @@ int main(void)
 		switch(Process_RX_Transmission(rx_cmd_buffer, &rx_cmd_len))
 		{
 		case DETECT_COMMAND:
-
 			RomDetection();
-
 			break;
 
 		case READ_COMMAND:
-
 			RomRead();
+			break;
 
+		case RAMTEST_COMMAND:
+			RamTest();
+			break;
+
+		case CONTROL_RAM_CLOCK_COMMAND:
+			ControlRamClock();
+			break;
+
+		case GET_RAM_CLOCK_COMMAND:
+			GetRamClock();
+			break;
+
+		case SET_RAM_CLOCK_COMMAND:
+			SetRamClock();
 			break;
 
 		default:
@@ -215,6 +237,298 @@ void RomRead(void)
 
 	return;
 }
+
+/* RAM_TEST_CODE */
+void RamTest(void)
+{
+	/* Check command length */
+	if(rx_cmd_len == RAMTEST_CMD_LEN)
+	{
+		BUSY_LED_ON;
+
+		uint8_t ram_type = rx_cmd_buffer[RAM_TYPE_INDEX];
+
+		/* Perform test only if module is connected */
+		if(module_is_connected == TRUE)
+		{
+			/* Select correct RAM */
+			switch(ram_type)
+			{
+				case M48T02_RAM_TYPE:
+
+					RAM_battery_is_OK = Check_if_RAM_battery_is_OK();
+					RAM_memory_is_OK = Check_if_RAM_memory_is_OK(M48T02_RAM_SIZE);
+
+					break;
+
+				case M48Z02_RAM_TYPE:
+
+					RAM_battery_is_OK = Check_if_RAM_battery_is_OK();
+					RAM_memory_is_OK = Check_if_RAM_memory_is_OK(M48Z02_RAM_SIZE);
+
+					break;
+
+				case M48T08_RAM_TYPE:
+
+					RAM_battery_is_OK = Check_if_RAM_battery_is_OK();
+					RAM_memory_is_OK = Check_if_RAM_memory_is_OK(M48T08_RAM_SIZE);
+
+					break;
+
+				case M48Z08_RAM_TYPE:
+
+					RAM_battery_is_OK = Check_if_RAM_battery_is_OK();
+					RAM_memory_is_OK = Check_if_RAM_memory_is_OK(M48Z08_RAM_SIZE);
+
+					break;
+
+				case S62256_RAM_TYPE:
+
+					/* That RAM type is not battery-backed */
+					RAM_battery_is_OK = FALSE;
+					RAM_memory_is_OK = Check_if_RAM_memory_is_OK(S62256_RAM_SIZE);
+
+					break;
+
+				default:
+
+					/* Unsupported RAM type */
+					RAM_battery_is_OK = FALSE;
+					RAM_memory_is_OK = FALSE;
+
+					break;
+			}
+
+			module_detection_was_performed = 1;
+		}
+
+		/* Compose response */
+		tx_response_buffer[CMD_INDEX]				= RAMTEST_COMMAND;
+		tx_response_buffer[DETECT_INDEX]			= module_is_connected;
+		tx_response_buffer[RAM_BATTERY_IS_OK_INDEX]	= RAM_battery_is_OK;
+		tx_response_buffer[RAM_MEMORY_IS_OK_INDEX]	= RAM_memory_is_OK;
+
+		/* Send response to PC */
+		TX_frame(tx_response_buffer, RAMTEST_CMD_RESPONSE_LEN);
+
+		BUSY_LED_OFF;
+	}
+
+	return;
+}
+
+void ControlRamClock(void)
+{
+	uint8_t execution_OK = TRUE;
+
+	/* Check command length */
+	if(rx_cmd_len == CONTROL_RAM_CLOCK_CMD_LEN)
+	{
+		BUSY_LED_ON;
+
+		uint8_t ram_type		= rx_cmd_buffer[RAM_TYPE_INDEX];
+		uint8_t ram_clock_cmd	= rx_cmd_buffer[RAM_CLOCK_CMD_INDEX];
+
+		/* Perform test only if module is connected */
+		if(module_is_connected == TRUE)
+		{
+			/* Check if type is correct */
+			if((ram_type == M48T02_RAM_TYPE) || (ram_type == M48T08_RAM_TYPE))
+			{
+				switch(ram_clock_cmd)
+				{
+					case START_CLOCK_OSCILLATOR:
+
+						/* Memory size is offset to clock */
+						Start_RAM_clock_oscillator((ram_type == M48T02_RAM_TYPE) ? M48T02_RAM_SIZE : M48T08_RAM_SIZE);
+
+						execution_OK = TRUE;
+
+						break;
+
+					case STOP_CLOCK_OSCILLATOR:
+
+						Stop_RAM_clock_oscillator((ram_type == M48T02_RAM_TYPE) ? M48T02_RAM_SIZE : M48T08_RAM_SIZE);
+
+						execution_OK = TRUE;
+
+						break;
+
+					case RESET_CLOCK:
+
+						Reset_RAM_clock((ram_type == M48T02_RAM_TYPE) ? M48T02_RAM_SIZE : M48T08_RAM_SIZE);
+
+						execution_OK = TRUE;
+
+						break;
+
+					default:
+
+						execution_OK = FALSE;
+
+						break;
+				}
+			}
+
+			module_detection_was_performed = 1;
+		}
+
+		/* Compose response */
+		tx_response_buffer[CMD_INDEX]				= CONTROL_RAM_CLOCK_COMMAND;
+		tx_response_buffer[DETECT_INDEX]			= module_is_connected;
+		tx_response_buffer[EXECUTION_OK_INDEX]		= execution_OK;
+
+		/* Send response to PC */
+		TX_frame(tx_response_buffer, CONTROL_RAM_CLOCK_CMD_RESPONSE_LEN);
+
+		BUSY_LED_OFF;
+	}
+
+	return;
+}
+
+void GetRamClock(void)
+{
+	uint8_t clock_data_valid = TRUE;
+	struct time_data clock_data;
+
+	/* Check command length */
+	if(rx_cmd_len == GET_RAM_CLOCK_CMD_LEN)
+	{
+		BUSY_LED_ON;
+
+		uint8_t ram_type = rx_cmd_buffer[RAM_TYPE_INDEX];
+
+		if(module_is_connected == TRUE)
+		{
+			/* Select correct RAM */
+			switch(ram_type)
+			{
+				case M48T02_RAM_TYPE:
+
+					Get_time_from_RAM_clock(M48T02_RAM_SIZE, &clock_data);
+
+					/* Data OK */
+					clock_data_valid = TRUE;
+
+					break;
+
+				case M48T08_RAM_TYPE:
+
+					Get_time_from_RAM_clock(M48T08_RAM_SIZE, &clock_data);
+
+					/* Data OK */
+					clock_data_valid = TRUE;
+
+					break;
+
+
+				default:
+
+					/* Unsupported RAM */
+					clock_data_valid = FALSE;
+
+					break;
+			}
+		}
+		else
+		{
+			/* RAM adapter not connected at all */
+			clock_data_valid = FALSE;
+		}
+
+		/* Compose response */
+		tx_response_buffer[CMD_INDEX] 				= GET_RAM_CLOCK_COMMAND;
+		tx_response_buffer[DETECT_INDEX]			= module_is_connected;
+		tx_response_buffer[CLOCK_DATA_VALID_INDEX]	= clock_data_valid;
+
+		if(clock_data_valid == TRUE)
+		{
+			memcpy(&tx_response_buffer[CLOCK_DATA_GET_DATA_INDEX], &clock_data, sizeof(clock_data));
+		}
+		else
+		{
+			/* Clear buffer if data is not valid */
+			memset(&tx_response_buffer[CLOCK_DATA_GET_DATA_INDEX], 0x00, sizeof(clock_data));
+		}
+
+		/* Send response to PC */
+		TX_frame(tx_response_buffer, GET_RAM_CLOCK_CMD_RESPONSE_LEN);
+
+		BUSY_LED_OFF;
+	}
+
+	return;
+}
+
+void SetRamClock(void)
+{
+	uint8_t execution_OK = TRUE;
+	struct time_data clock_data;
+
+	/* Check command length */
+	if(rx_cmd_len == SET_RAM_CLOCK_CMD_LEN)
+	{
+		BUSY_LED_ON;
+
+		uint8_t ram_type		= rx_cmd_buffer[RAM_TYPE_INDEX];
+
+		/* Copy data to clock data structure */
+		memcpy(&clock_data, &rx_cmd_buffer[RAM_CLOCK_SET_DATA_INDEX], sizeof(clock_data));
+
+		if(module_is_connected == TRUE)
+		{
+			/* Select correct RAM */
+			switch(ram_type)
+			{
+				case M48T02_RAM_TYPE:
+
+					Set_time_in_RAM_clock(M48T02_RAM_SIZE, &clock_data);
+
+					/* Executed OK */
+					execution_OK = TRUE;
+
+					break;
+
+				case M48T08_RAM_TYPE:
+
+					Set_time_in_RAM_clock(M48T08_RAM_SIZE, &clock_data);
+
+					/* Executed OK */
+					execution_OK = TRUE;
+
+					break;
+
+
+				default:
+
+					/* Unsupported RAM */
+					execution_OK = FALSE;
+
+					break;
+			}
+		}
+		else
+		{
+			/* RAM adapter not connected at all */
+			execution_OK = FALSE;
+		}
+
+		/* Compose response */
+		tx_response_buffer[CMD_INDEX] 			= SET_RAM_CLOCK_COMMAND;
+		tx_response_buffer[DETECT_INDEX]		= module_is_connected;
+		tx_response_buffer[EXECUTION_OK_INDEX]	= execution_OK;
+
+		/* Send response to PC */
+		TX_frame(tx_response_buffer, SET_RAM_CLOCK_CMD_RESPONSE_LEN);
+
+		BUSY_LED_OFF;
+	}
+
+	return;
+}
+
+
 
 inline uint8_t Check_8K_ROM(void)
 {
