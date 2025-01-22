@@ -6,8 +6,8 @@
 	(paper "A4")
 	(title_block
 		(title "ROM reader RAM adapter")
-		(date "2024-08-17")
-		(rev "A")
+		(date "2025-01-22")
+		(rev "B")
 		(company "trwgQ26xxx")
 	)
 	(lib_symbols
@@ -6771,7 +6771,7 @@
 				)
 			)
 		)
-		(property "Value" "DB25_Plug"
+		(property "Value" "ROM"
 			(at 48.26 45.72 0)
 			(effects
 				(font
@@ -8997,7 +8997,6 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "ba828c8b-ad3c-4a6e-af4f-50e7d19fa624")
 		(property "Reference" "J1"
 			(at 47.625 129.54 0)
@@ -9007,7 +9006,7 @@
 				)
 			)
 		)
-		(property "Value" "EC"
+		(property "Value" "RAM ADAPTER EXT"
 			(at 47.625 132.08 0)
 			(effects
 				(font
