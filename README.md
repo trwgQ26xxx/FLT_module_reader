@@ -146,10 +146,14 @@ The supported SRAM types for this command are:
 
 1. Use *RAM_test* to check the RAM battery and RAM memory cells.
 2. If the RAM has an RTC:
-2.1. Execute the *reset command* to reset the RAM clock.
-2.2. Execute the *start command** to starts the internal oscillator and enable normal clock operation.
-2.3. Execute the *set command* to set the current time.
-2.4. Run *RAM_clock_read* to verify both the validity of the time and that it increments. If both conditions are met, the RTC is functioning properly.
+
+- Execute the *reset command* to reset the RAM clock.
+
+- Execute the *start command** to starts the internal oscillator and enable normal clock operation.
+
+- Execute the *set command* to set the current time.
+
+- Run *RAM_clock_read* to verify both the validity of the time and that it increments. If both conditions are met, the RTC is functioning properly.
 
 # Notes
 
