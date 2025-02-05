@@ -1,7 +1,6 @@
 import serial
-import libscrc
-import time
 import sys
+import time
 import calendar
 
 baudrate = 57600
@@ -35,10 +34,22 @@ class style():
 	UNDERLINE = '\033[4m'
 	RESET = '\033[0m'
 
+def xmodem_crc(data):
+    crc = 0x0000
+    for byte in data:
+        crc ^= (byte << 8)
+        for _ in range(8):
+            if (crc & 0x8000) == 0x8000:
+                crc = (crc << 1) ^ 0x1021
+            else:
+                crc <<= 1
+        crc &= 0xFFFF
+    return crc
+
 def encode_cmd(cmd):
 	det_cmd = bytearray(cmd)
 
-	crc16 = libscrc.xmodem(det_cmd)
+	crc16 = xmodem_crc(det_cmd)
 	crc_h = (crc16 >> 8) & 0xFF
 	crc_l = (crc16 >> 0) & 0xFF
 
@@ -83,7 +94,7 @@ def check_crc(cmd):
 	if cmd_len >= MIN_RX_CMD_LEN:
 		crc_received = ((cmd[cmd_len - 2] << 8) | cmd[cmd_len - 1]) & 0xFFFF
 		
-		if libscrc.xmodem(cmd[:-2]) == crc_received:
+		if xmodem_crc(cmd[:-2]) == crc_received:
 			return True
 		else:
 			return False
