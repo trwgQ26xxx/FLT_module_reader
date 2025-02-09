@@ -2,5 +2,6 @@
 /firmware/.project
 /firmware/out/*.o
 /firmware/out/*.elf
-/PCB/GERBERS/
+/PCB/GERBERS*
+/PCB/*cache
 /PCB/*backups/
