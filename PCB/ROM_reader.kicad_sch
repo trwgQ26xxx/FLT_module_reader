@@ -5,8 +5,8 @@
 	(uuid "9fd3275f-ad4c-4091-a255-623d2dc02a34")
 	(paper "A4")
 	(title_block
-		(title "FLT/CU1 ROM reader")
-		(date "2025-01-31")
+		(title "FLT/ART/CU-1 ROM reader")
+		(date "2025-02-10")
 		(rev "C")
 		(company "trwgQ26xxx")
 	)
@@ -6830,6 +6830,16 @@
 	)
 	(wire
 		(pts
+			(xy 256.54 128.27) (xy 259.08 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "64378d87-0ac4-44af-ab71-6379a80055a7")
+	)
+	(wire
+		(pts
 			(xy 53.34 168.91) (xy 74.93 168.91)
 		)
 		(stroke
@@ -7368,16 +7378,6 @@
 		)
 		(uuid "a1d8a236-6f8e-4bc8-8df9-984b870cdfa4")
 	)
-	(wire
-		(pts
-			(xy 256.54 130.81) (xy 259.08 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a3863a2e-0f1d-43f2-8970-73952f88b74f")
-	)
 	(bus
 		(pts
 			(xy 241.3 77.47) (xy 241.3 80.01)
@@ -7597,6 +7597,16 @@
 			(type default)
 		)
 		(uuid "bb5addfe-e46c-464a-8009-018d9a5fed04")
+	)
+	(wire
+		(pts
+			(xy 256.54 130.81) (xy 259.08 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bcaae47c-a485-4859-b023-274f96ba1c34")
 	)
 	(wire
 		(pts
@@ -7827,16 +7837,6 @@
 			(type default)
 		)
 		(uuid "db790aec-80a3-4a13-b97b-5661b1270861")
-	)
-	(wire
-		(pts
-			(xy 256.54 128.27) (xy 259.08 128.27)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dc17cffe-e32e-498c-ab7b-67140d394fa2")
 	)
 	(wire
 		(pts
@@ -9662,8 +9662,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x02_Pin")
-		(at 264.16 128.27 0)
-		(mirror y)
+		(at 264.16 130.81 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9671,7 +9670,7 @@
 		(dnp no)
 		(uuid "0d5803ec-a681-41a1-97b6-3c858711cdbb")
 		(property "Reference" "J4"
-			(at 265.43 128.2699 0)
+			(at 265.43 130.8101 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9680,7 +9679,7 @@
 			)
 		)
 		(property "Value" "RAM ADAPTER EXT"
-			(at 265.43 130.8099 0)
+			(at 265.43 128.2701 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9689,7 +9688,7 @@
 			)
 		)
 		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Horizontal"
-			(at 264.16 128.27 0)
+			(at 264.16 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9698,7 +9697,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 264.16 128.27 0)
+			(at 264.16 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9707,7 +9706,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 264.16 128.27 0)
+			(at 264.16 130.81 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10843,7 +10842,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_2010_5025Metric_Pad1.52x2.65mm_HandSolder"
+		(property "Footprint" "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder"
 			(at 71.12 92.71 0)
 			(effects
 				(font
@@ -12271,7 +12270,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_8x5.4"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
 			(at 55.5752 35.56 0)
 			(effects
 				(font
@@ -12819,7 +12818,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:CP_Elec_8x5.4"
+		(property "Footprint" "Capacitor_SMD:CP_Elec_6.3x7.7"
 			(at 18.7452 35.56 0)
 			(effects
 				(font
@@ -14906,7 +14905,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "LED_SMD:LED_2010_5025Metric_Pad1.52x2.65mm_HandSolder"
+		(property "Footprint" "LED_SMD:LED_1206_3216Metric_Pad1.42x1.75mm_HandSolder"
 			(at 85.09 92.71 0)
 			(effects
 				(font
