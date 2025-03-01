@@ -1,7 +1,7 @@
 import serial
 import sys
 
-baudrate = 57600
+baudrate = 115200
 ser_timeout	= 0.5
 
 RAMTEST_CMD		= ord("r")

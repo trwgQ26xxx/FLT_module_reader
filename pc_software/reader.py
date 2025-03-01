@@ -2,7 +2,7 @@ import serial
 import sys
 import time
 
-baudrate = 57600
+baudrate = 115200
 ser_timeout	= 2
 
 DET_CMD	= ord("t")

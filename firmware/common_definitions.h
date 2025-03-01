@@ -10,7 +10,7 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #define _COMMON_DEFINITIONS_H
 
 /* UART parameters */
-#define BAUDRATE							57600UL
+#define BAUDRATE							115200UL
 
 /* LED blinking parameters */
 #define TMR_PERIOD							20	//ms

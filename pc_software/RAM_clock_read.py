@@ -3,7 +3,7 @@ import sys
 import time
 import calendar
 
-baudrate = 57600
+baudrate = 115200
 ser_timeout	= 0.5
 
 clock_req_period = 0.5	#2Hz

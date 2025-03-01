@@ -2,7 +2,7 @@ import serial
 import sys
 from datetime import datetime
 
-baudrate = 57600
+baudrate = 115200
 ser_timeout	= 0.5
 
 CONTROL_RAM_CLOCK_CMD	= ord("c")
