@@ -37,10 +37,10 @@ unsigned char Process_RX_Transmission(uint8_t *buffer, uint8_t *rx_cmd_len)
 	uint8_t valid_frame_was_received = FALSE;
 	uint8_t character;
 
-	while(IS_RX_CHAR_WAITING)
+	while(Check_is_RX_char_waiting() == TRUE)
 	{
 		/* Get character */
-		character = RX_CHAR;
+		character = Get_RX_char();
 
 		switch(character)
 		{

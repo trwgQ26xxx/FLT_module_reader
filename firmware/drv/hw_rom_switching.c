@@ -9,7 +9,6 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #include "hw_rom_switching.h"
 
 #include <avr/io.h>
-#include <util/delay.h>
 
 #include "../common_definitions.h"
 

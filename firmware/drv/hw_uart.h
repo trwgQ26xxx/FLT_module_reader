@@ -23,11 +23,27 @@ PD3 -> TXD
 
 #include <avr/io.h>
 
-#define IS_RX_CHAR_WAITING	(UCSR1A & (1 << RXC1))
-#define RX_CHAR				UDR1
+#include "../common_definitions.h"
 
 void Init_UART(uint32_t baudrate);
 
 void TX_single_char(uint8_t single_char);
+
+inline uint8_t Get_RX_char(void)
+{
+	return UDR1;
+}
+
+inline uint8_t Check_is_RX_char_waiting(void)
+{
+	if((UCSR1A & (1 << RXC1)))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
 
 #endif

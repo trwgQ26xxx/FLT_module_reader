@@ -30,13 +30,11 @@ void Init_UART(uint32_t baudrate)
 	UCSR1C = (0 << USBS1) | (3 << UCSZ10);
 }
 
-
 void TX_single_char(uint8_t single_char)
 {
 	/* Wait for empty transmit buffer */
 	while(!(UCSR1A & (1 << UDRE1)));
-	
+
 	/* Put data into buffer, sends the data */
 	UDR1 = single_char;
 }
-

@@ -8,6 +8,8 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 
 #include "hw_tmr.h"
 
+#include <avr/io.h>
+
 void Init_TMR(uint16_t time)
 {
 	unsigned int period = (((F_CPU / 1024) * time) / 1000) - 1;

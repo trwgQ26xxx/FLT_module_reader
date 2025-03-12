@@ -114,10 +114,6 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 /* Set RAM clock data TX frame */
 #define SET_RAM_CLOCK_CMD_RESPONSE_LEN		3
 
-/* ADC ROM size detecion */
-#define NUMBER_OF_ADC_MEASUREMENTS			10
-#define DELAY_BETWEEN_ADC_MEASUREMENTS		10	//ms
-
 /* RAM sizes for RAM test */
 #define M48Z02_RAM_SIZE						0x800
 #define M48T02_RAM_SIZE						0x7F8

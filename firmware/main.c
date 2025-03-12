@@ -9,8 +9,6 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #include <stdint.h>
 #include <string.h>
 
-#include <util/delay.h>
-
 #include "common_definitions.h"
 
 #include "drv/hw_ext_mem.h"
@@ -622,7 +620,6 @@ inline uint8_t Check_64K_ROMs(void)
 		else
 		{
 			/* Neither high nor low bank are present */
-
 			ROM_is_present = ROM_NOT_PRESENT;
 		}
 	}
@@ -701,7 +698,7 @@ inline void Clear_ROM_info(void)
 	ROM_B_is_present = ROM_NOT_PRESENT;
 	ROM_C_is_present = ROM_NOT_PRESENT;
 
-	/* that flag will be set if ROM is connected and detection was performed */
+	/* That flag will be set if ROM is connected and detection was performed */
 	module_detection_was_performed = FALSE;
 
 	return;
