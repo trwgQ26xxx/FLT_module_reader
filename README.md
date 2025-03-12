@@ -161,4 +161,4 @@ Atmega64A fusebits should be configured as follows:
 
 | Extended | High | Low |
 | --- | --- | --- |
-| 0xFF | 0xC9 | 0x1F |
+| 0xFE | 0xC9 | 0x1F |
