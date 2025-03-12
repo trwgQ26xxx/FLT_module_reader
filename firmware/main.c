@@ -16,6 +16,7 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #include "drv/hw_rom_switching.h"
 #include "drv/hw_leds.h"
 #include "drv/hw_tmr.h"
+#include "drv/hw_wdt.h"
 
 #include "serial_transmission.h"
 
@@ -33,6 +34,7 @@ volatile uint8_t RAM_memory_is_OK = FALSE;
 static uint8_t rx_cmd_buffer[RX_CMD_BUFFER_MAX_LEN], rx_cmd_len = 0;
 static uint8_t tx_response_buffer[TX_BUFFER_MAX_LEN];
 
+
 inline uint8_t Select_correct_bank_for_A_ROM(uint8_t block_number, uint8_t *block_to_read);
 inline uint8_t Select_correct_bank_for_B_and_C_ROMs(uint8_t block_number, uint8_t *block_to_read);
 inline void Clear_ROM_info(void);
@@ -49,8 +51,13 @@ void ControlRamClock(void);
 void GetRamClock(void);
 void SetRamClock(void);
 
+
 int main(void)
 {
+	/* Set WDT to correct timeout, as */
+	/* it is always enabled via fuse bit */
+	Init_WDT();
+	
 	/* Initialize peripherals */
     Init_EXTMEM();
     Init_LEDs();
@@ -71,6 +78,9 @@ int main(void)
     /* Disable auto detect */
 	SET_A15_TO_HIGH;
 	CONFIGURE_A15_AS_OUT;
+	
+	/* Clear WDT */
+	Poke_WDT();
 
     /* Main loop */
     while(1)
@@ -105,6 +115,9 @@ int main(void)
 			/* Nothing */
 			break;
 		}
+		
+		/* Clear WDT */
+		Poke_WDT();
     }
 
     /* Program should never go here */

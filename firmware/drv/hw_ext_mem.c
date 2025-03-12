@@ -17,6 +17,8 @@ Compiler:		AVR-GCC version 5.4.0 (32-bit)
 #include "ram_test_definitions.h"
 #include "ram_test_data.h"
 
+#include "hw_wdt.h"
+
 #define EXT_MEM_BASE			0x8000
 
 #define EXT_MEM_MAPPED_SIZE		0x8000	//32k
@@ -159,22 +161,37 @@ uint8_t Check_if_RAM_memory_is_OK(uint16_t ram_size)
 	{
 		Store_pattern(ram_test_patterns[i], ram_size);
 
+		/* Clear WDT */
+		Poke_WDT();
+
 		if(Verify_pattern(ram_test_patterns[i], ram_size) == FALSE)
 		{
 			return FALSE;
 		}
+
+		/* Clear WDT */
+		Poke_WDT();
 	}
 
 	/* Pass 2 - random data test */
 	Store_test_data(ram_size);
+
+	/* Clear WDT */
+	Poke_WDT();
 
 	if(Verify_test_data(ram_size) == FALSE)
 	{
 		return FALSE;
 	}
 
+	/* Clear WDT */
+	Poke_WDT();
+
 	/* Final cleanup (0xFF fill) */
 	Store_pattern(EMPTY_ROM_BYTE, ram_size);
+
+	/* Clear WDT */
+	Poke_WDT();
 
 	/* All pass, RAM is OK */
 	return TRUE;
@@ -363,6 +380,7 @@ inline void Store_pattern(const uint8_t pattern, uint16_t ram_size)
 {
 	for(uint16_t addr = 0; addr < ram_size; addr++)
 	{
+		/* Store byte */
 		Write_RAM_byte(addr, pattern);
 	}
 }
@@ -371,6 +389,7 @@ inline uint8_t Verify_pattern(const uint8_t pattern, uint16_t ram_size)
 {
 	for(uint16_t addr = 0; addr < ram_size; addr++)
 	{
+		/* Check byte */
 		if(Read_ROM_byte(addr) != pattern)
 		{
 			return FALSE;
@@ -386,6 +405,7 @@ inline void Store_test_data(uint16_t ram_size)
 
 	for(uint16_t addr = 0; addr < ram_size; addr++)
 	{
+		/* Store byte */
 		Write_RAM_byte(addr, pgm_read_byte(&ram_test_data[test_data_index++]));
 
 		/* Wrap around if memory size is greater than test data array length */
@@ -402,6 +422,7 @@ inline uint8_t Verify_test_data(uint16_t ram_size)
 
 	for(uint16_t addr = 0; addr < ram_size; addr++)
 	{
+		/* Check byte */
 		if(Read_ROM_byte(addr) != pgm_read_byte(&ram_test_data[test_data_index++]))
 		{
 			return FALSE;
