@@ -2,7 +2,7 @@ import serial
 import sys
 
 baudrate = 115200
-ser_timeout	= 0.5
+ser_timeout	= 2.0
 
 RAMTEST_CMD		= ord("r")
 RAMTEST_CMD_RESPONSE_LEN = 6
