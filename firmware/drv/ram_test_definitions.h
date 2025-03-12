@@ -3,7 +3,7 @@ Project name:	FLT/ART/CU1 ROM Reader
 Author: 		trwgQ26xxx
 Date:			18.01.2025
 Target MCUs:	ATmega64/ATmega64L/ATmega64A/ATmega128/ATmega128L/ATmega128A
-Compiler:		AVR-GCC version 5.4.0 (32-bit)
+Compiler:		AVR-GCC version 7.3.0
 */
 
 #ifndef _DRV_RAM_TEST_DEFINITIONS_H
