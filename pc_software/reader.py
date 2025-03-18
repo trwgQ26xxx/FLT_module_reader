@@ -1,4 +1,5 @@
 import serial
+import os
 import sys
 import time
 
@@ -192,6 +193,8 @@ def write_file(file_name_preffix, rom_name,	rom_content):
 	f.write(rom_content)
 	f.close()
 
+#System call
+os.system("")
 
 #MAIN PROGRAM
 try:
