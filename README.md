@@ -2,8 +2,8 @@
 
 Dedicated module reader for FLT\ART\CU-1 ROMs archiving.
 
-![Top](PCB/TOP.jpg)
-![Bottom](PCB/BOTTOM.jpg)
+![FLT_DUMPERS](PCB/FLT_DUMPERS.jpg)
+![NEW_ROM_READER](PCB/NEW_ROM_READER.jpg)
 
 # Disclaimer
 
@@ -84,6 +84,8 @@ The program reads the contents of only the ROMs that are present in the module.
 # RAM adapter
 
 The RAM adapter is used for SRAM testing. It was primarily constructed to test the M48Z02 (used in FLT/ART) and the M48T02 (used in CU-1). The RAM adapter takes the form of a standard FLT ROM module. Additionally, it requires a connection to a supplementary 2-pin connector with the #WR signal, which is not present on the DSUB-25 connector of the ROM.
+
+![NEW_RAM_ADAPTER](PCB/NEW_RAM_ADAPTER.jpg)
 
 Before usage, the RAM adapter must be configured to the correct RAM variant using solder bridges (SB1 - SB3) on the PCB. The configuration is as follows:
 
