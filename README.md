@@ -28,7 +28,8 @@ This work is licensed under a
 
 - **firmware** - MCU firmware, written in C.
 - **pc_software** - PC software, written in Python.
-- **PCB** - PCB project, prepared in KiCad version 8.0.1.
+- **PCB** - Reader PCB project, designed in KiCad.
+- **ADAPTERS** - Adapter PCB projects, designed in KiCad.
 - **DS** - data sheets of used components
 
 # Usage
@@ -85,7 +86,7 @@ The program reads the contents of only the ROMs that are present in the module.
 
 The RAM adapter is used for SRAM testing. It was primarily constructed to test the M48Z02 (used in FLT/ART) and the M48T02 (used in CU-1). The RAM adapter takes the form of a standard FLT ROM module. Additionally, it requires a connection to a supplementary 2-pin connector with the #WR signal, which is not present on the DSUB-25 connector of the ROM.
 
-![NEW_RAM_ADAPTER](PCB/NEW_RAM_ADAPTER.jpg)
+![NEW_RAM_ADAPTER](ADAPTERS/RAM_ADAPTER/NEW_RAM_ADAPTER.jpg)
 
 Before usage, the RAM adapter must be configured to the correct RAM variant using solder bridges (SB1 - SB3) on the PCB. The configuration is as follows:
 
@@ -156,6 +157,12 @@ The supported SRAM types for this command are:
 - Execute the *set command* to set the current time.
 
 - Run *RAM_clock_read* to verify both the validity of the time and that it increments. If both conditions are met, the RTC is functioning properly.
+
+# 87C510 adapter
+
+The 87C510 adapter is designed for reading ROMs used in certain Bosch Motronic ECUs. The TMS87C510 is a 64 KB UV-erasable, multiplexed EPROM that supports both 8-bit and 16-bit output modes. The adapter is implemented in the form of a standard FLT ROM module, with the 87C510 configured and wired as ROMB.
+
+![NEW_RAM_ADAPTER](ADAPTERS/87C510_ADAPTER/87C510_ADAPTER.jpg)
 
 # Notes
 
