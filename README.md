@@ -4,6 +4,7 @@ Dedicated module reader for FLT\ART\CU-1 ROMs archiving.
 
 ![FLT_DUMPERS](PCB/FLT_DUMPERS.jpg)
 ![NEW_ROM_READER](PCB/NEW_ROM_READER.jpg)
+![ROM_READER_87C510_ADAPTER](PCB/ROM_READER_87C510_ADAPTER.jpg)
 
 # Disclaimer
 
@@ -162,7 +163,8 @@ The supported SRAM types for this command are:
 
 The 87C510 adapter is designed for reading ROMs used in certain Bosch Motronic ECUs. The TMS87C510 is a 64 KB UV-erasable, multiplexed EPROM that supports both 8-bit and 16-bit output modes. The adapter is implemented in the form of a standard FLT ROM module, with the 87C510 configured and wired as ROMB.
 
-![NEW_RAM_ADAPTER](ADAPTERS/87C510_ADAPTER/87C510_ADAPTER.jpg)
+![87C510_ADAPTER](ADAPTERS/87C510_ADAPTER/87C510_ADAPTER.jpg)
+![MOTRONIC_ECU](ADAPTERS/87C510_ADAPTER/MOTRONIC_ECU.jpg)
 
 # Notes
 
