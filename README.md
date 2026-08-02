@@ -6,6 +6,8 @@ Dedicated module reader for FLT\ART\CU-1 ROMs archiving.
 ![NEW_ROM_READER](PCB/NEW_ROM_READER.jpg)
 ![ROM_READER_87C510_ADAPTER](PCB/ROM_READER_87C510_ADAPTER.jpg)
 
+Contact : trwgQ {leechers not welcome} 26 {remove spaces} xxx {remove spaces} {at} proton {dot} me
+
 # Disclaimer
 
 I do not consent to the use of all or part of the project for commercial purposes!
